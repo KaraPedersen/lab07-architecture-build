@@ -61,4 +61,17 @@ describe('demo routes', () => {
 
     expect(res.body).toEqual(order);
   });
+
+  test('update an order via Put', async () => {
+    const order = await Order.insert({
+      item: 'mirror',
+      quantity: 10
+    });
+
+    const res = await request(app)
+      .put(`/api/v1/orders/${order.id}`)
+      .send(order);
+
+    expect(res.body).toEqual(order);
+  });
 });
