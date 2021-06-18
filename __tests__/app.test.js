@@ -24,6 +24,32 @@ describe('demo routes', () => {
     });
   });
 
+  test('finds all orders in the database', async() => {
+    const food = await Order.insert({
+      // id: '1',
+      item: 'food',
+      quantity: 15
+    });
+
+    const lipstick = await Order.insert({
+      // id: '2',
+      item: 'lipstick',
+      quantity: 2
+    });
+
+    const conditioner = await Order.insert({
+      // id: '3',
+      item: 'conditioner',
+      quantity: 4
+    });
+
+    const res = await request(app)
+      .get('/api/v1/orders');
+
+    expect(res.body).toEqual([food, lipstick, conditioner]);
+
+  });
+
   test('finds an order in the database', async() => {
     const order = await Order.insert({
       item: 'shampoo',
