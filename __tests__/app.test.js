@@ -23,4 +23,16 @@ describe('demo routes', () => {
       quantity: 100
     });
   });
+
+  test('finds an order in the database', async() => {
+    const order = await Order.insert({
+      item: 'shampoo',
+      quantity: 4
+    });
+
+    const res = await request(app)
+      .get(`/api/v1/orders/${order.id}`);
+
+    expect(res.body).toEqual(order);
+  });
 });
