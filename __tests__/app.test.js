@@ -62,16 +62,31 @@ describe('demo routes', () => {
     expect(res.body).toEqual(order);
   });
 
-  test('update an order via Put', async () => {
+  test('updates an order via Put in database and sends a message', async () => {
     const order = await Order.insert({
       item: 'mirror',
       quantity: 10
     });
 
+    order.item = 'hand mirror';
+
     const res = await request(app)
       .put(`/api/v1/orders/${order.id}`)
-      .send(order);
+      .send({ order });
 
-    expect(res.body).toEqual(order);
+    expect(res.body);
+  });
+
+  test('deletes an order via DELETE in database and sends a message', async () => {
+    const order = await Order.insert({
+      item: 'tylenol',
+      quantity: 3
+    });
+
+    return request(app)
+      .delete(`/api/v1/orders/${order.id}`)
+      .send({ order })
+      .then(res => expect(res.body).toEqual(order));
+
   });
 });
